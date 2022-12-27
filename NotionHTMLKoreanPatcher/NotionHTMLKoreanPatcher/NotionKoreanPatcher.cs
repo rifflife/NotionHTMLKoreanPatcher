@@ -58,21 +58,29 @@
 							{
 								dir.Delete(true);
 							}
+
+							Directory.Delete(d);
 						}
 						else
 						{
 							Directory.Move(d, renamedPath);
+							Console.WriteLine($"[Directory] Convert to : \n\"{originDirName}\"\n\"{renameDirName}\"\n");
+							PatchCount++;
+							isPatched = true;
 						}
 
-						Console.WriteLine($"[Directory] Convert to : \n\"{originDirName}\"\n\"{renameDirName}\"\n");
-						PatchCount++;
-						isPatched = true;
 					}
 				}
 
 				// Convert file names
 				foreach (var f in Directory.GetFiles(curPath))
 				{
+					var curFileExtension = Path.GetExtension(f);
+					if (curFileExtension.ToLower() != ".html")
+					{
+						continue;
+					}
+
 					if (TryGetRenameHangulPath
 					(
 						f,
